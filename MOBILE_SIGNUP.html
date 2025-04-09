@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VibeUp - Auth Flow</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #5a5aff;
+      --secondary-color: #f5f5f5;
+      --text-color: #333;
+      --bg-color: white;
+    }
+
+    body.dark-mode {
+      --primary-color: #ff6f61;
+      --secondary-color: #222;
+      --text-color: #eee;
+      --bg-color: #121212;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, var(--primary-color) 50%, var(--secondary-color) 50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      transition: background 0.5s ease;
+    }
+
+    .screen {
+      background: var(--bg-color);
+      border-radius: 20px;
+      padding: 30px 20px;
+      width: 340px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      text-align: center;
+      animation: fadeIn 0.6s ease;
+      color: var(--text-color);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .app-icon img {
+      width: 80px;
+      margin-bottom: 15px;
+    }
+
+    h1, h2 {
+      color: var(--primary-color);
+      margin-bottom: 5px;
+    }
+
+    .tagline {
+      font-size: 14px;
+      color: var(--text-color);
+      margin-bottom: 20px;
+    }
+
+    .social-login p,
+    .or-text,
+    .switch-screen {
+      color: var(--text-color);
+    }
+
+    .social-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .social-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 50%;
+      font-size: 18px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .fb {
+      background-color: #3b5998;
+    }
+
+    .tw {
+      background-color: #1da1f2;
+    }
+
+    .actions button,
+    form button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .secondary {
+      background-color: white;
+      color: var(--primary-color);
+      border: 2px solid var(--primary-color);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    input {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    .password-field {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .password-field input {
+      width: 100%;
+      padding-right: 40px;
+    }
+
+    .toggle-eye {
+      position: absolute;
+      right: 12px;
+      cursor: pointer;
+      font-size: 18px;
+      color: #888;
+    }
+
+    .switch-screen a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    #toggle-mode {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 10px;
+      border-radius: 50%;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <button id="toggle-mode">🌙</button>
+  <div class="screen" id="welcome-screen">
+    <div class="app-icon">
+      <img src="https://img.icons8.com/fluency/96/rocket.png" alt="VibeUp Icon" />
+    </div>
+    <h1>Welcome to VibeUp!</h1>
+    <p class="tagline">Get inspired. Stay connected. Join the community.</p>
+
+    <div class="social-login">
+      <p>Sign in with:</p>
+      <div class="social-buttons">
+        <button class="social-btn fb">f</button>
+        <button class="social-btn tw">t</button>
+      </div>
+    </div>
+
+    <p class="or-text">or login with your email</p>
+
+    <div class="actions">
+      <button id="signup-btn">Sign Up</button>
+      <button id="login-btn" class="secondary">Login</button>
+    </div>
+  </div>
+
+  <div class="screen" id="signup-screen" style="display: none;">
+    <h2>Create Account</h2>
+    <p class="tagline">Join VibeUp and start your journey</p>
+    <form id="signup-form">
+      <input type="text" placeholder="Full Name" required />
+      <input type="email" placeholder="Email" required />
+      <div class="password-field">
+        <input type="password" id="signup-password" placeholder="Password" required />
+        <span id="toggle-password" class="toggle-eye">👁️</span>
+      </div>
+      <button type="submit">Sign Up</button>
+    </form>
+    <p class="switch-screen">
+      Already have an account? <a href="#" id="back-to-welcome">Go back</a>
+    </p>
+  </div>
+
+  <div class="screen" id="login-screen" style="display: none;">
+    <h2>Welcome Back</h2>
+    <p class="tagline">Login to continue your journey with VibeUp</p>
+    <form id="login-form">
+      <input type="email" placeholder="Email" required />
+      <div class="password-field">
+        <input type="password" id="login-password" placeholder="Password" required />
+        <span id="toggle-login-password" class="toggle-eye">👁️</span>
+      </div>
+      <button type="submit">Login</button>
+    </form>
+    <p class="switch-screen">
+      Don’t have an account? <a href="#" id="back-to-welcome-login">Go back</a>
+    </p>
+  </div>
+
+  <script>
+    const welcomeScreen = document.getElementById("welcome-screen");
+    const signupScreen = document.getElementById("signup-screen");
+    const loginScreen = document.getElementById("login-screen");
+
+    document.getElementById("signup-btn").onclick = () => {
+      welcomeScreen.style.display = "none";
+      signupScreen.style.display = "block";
+    };
+
+    document.getElementById("login-btn").onclick = () => {
+      welcomeScreen.style.display = "none";
+      loginScreen.style.display = "block";
+    };
+
+    document.getElementById("back-to-welcome").onclick = (e) => {
+      e.preventDefault();
+      signupScreen.style.display = "none";
+      welcomeScreen.style.display = "block";
+    };
+
+    document.getElementById("back-to-welcome-login").onclick = (e) => {
+      e.preventDefault();
+      loginScreen.style.display = "none";
+      welcomeScreen.style.display = "block";
+    };
+
+    document.getElementById("toggle-password").onclick = () => {
+      const pw = document.getElementById("signup-password");
+      const type = pw.type === "password" ? "text" : "password";
+      pw.type = type;
+      document.getElementById("toggle-password").textContent = type === "text" ? "🙈" : "👁️";
+    };
+
+    document.getElementById("toggle-login-password").onclick = () => {
+      const pw = document.getElementById("login-password");
+      const type = pw.type === "password" ? "text" : "password";
+      pw.type = type;
+      document.getElementById("toggle-login-password").textContent = type === "text" ? "🙈" : "👁️";
+    };
+
+    document.getElementById("toggle-mode").onclick = () => {
+      document.body.classList.toggle("dark-mode");
+    };
+  </script>
+</body>
+</html>
